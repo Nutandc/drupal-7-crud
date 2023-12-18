@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * Implements hook_install().
+ */
+function nutan_itonics_products_install() {
+  // Create the table when the module is installed.
+  drupal_install_schema('nutan_itonics_products');
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function nutan_itonics_products_uninstall() {
+  // Drop the table when the module is uninstalled.
+  drupal_uninstall_schema('nutan_itonics_products');
+}

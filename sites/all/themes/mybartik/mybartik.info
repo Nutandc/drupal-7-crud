@@ -1,0 +1,5 @@
+name = My Bartik Sub-theme
+description = Custom sub-theme based on Bartik.
+core = 7.x
+base theme = bartik
+stylesheets[all][] = style.css

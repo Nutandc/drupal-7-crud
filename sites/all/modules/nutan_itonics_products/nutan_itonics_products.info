@@ -1,0 +1,5 @@
+name = 'Nutan Itonics Products'
+description = 'A module to store information about products in ITONICS.'
+package = 'Custom'
+core = 7.x
+stylesheets[all][] = style.css

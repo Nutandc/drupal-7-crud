@@ -1,0 +1,132 @@
+<?php
+
+/**
+ * Implements hook_permission().
+ */
+function nutan_itonics_products_permission(): array
+{
+  return [
+    'administer products' => [
+      'title' => t('Administer products'),
+      'description' => t('Access to product administration.'),
+    ]
+  ];
+}
+
+/**
+ * Implements hook_menu().
+ */
+function nutan_itonics_products_menu(): array
+{
+  $items = [];
+
+  $items['admin/products'] = [
+    'title' => 'Products',
+    'description' => 'Manage products.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => ['nutan_itonics_products_admin'],
+    'access arguments' => ['administer products'],
+    'type' => MENU_NORMAL_ITEM,
+  ];
+
+  $items['admin/products/add'] = [
+    'title' => 'Add Product',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => ['nutan_itonics_products_add'],
+    'access arguments' => ['administer products'],
+    'type' => MENU_NORMAL_ITEM,
+  ];
+  $items['admin/products/%'] = [
+    'title' => 'View Product',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => ['nutan_itonics_products_view_form', 2], // Assuming product ID is the second argument.
+    'access arguments' => ['administer products'],
+    'type' => MENU_NORMAL_ITEM,
+  ];
+
+  // Edit product page.
+  $items['admin/products/%/edit'] = [
+    'title' => 'Edit Product',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => ['nutan_itonics_products_edit_form', 2],
+    'access arguments' => ['administer products'], // Adjust the access as needed.
+    'type' => MENU_NORMAL_ITEM,
+  ];
+
+  // Delete product page.
+  $items['admin/products/%/delete'] = [
+    'title' => 'Delete Product',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => ['nutan_itonics_products_delete_form', 2],
+    'access arguments' => ['administer products'], // Adjust the access as needed.
+    'type' => MENU_NORMAL_ITEM,
+  ];
+  return $items;
+}
+
+/**
+ * Implements hook_schema().
+ */
+function nutan_itonics_products_schema(): array
+{
+  $schema = [];
+
+  $schema['nutan_itonics_products'] = [
+    'description' => 'Table for storing information about products in ITONICS.',
+    'fields' => [
+      'id' => [
+        'description' => 'The primary identifier for a product.',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'title' => [
+        'description' => 'The title of the product.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ],
+      'image' => [
+        'description' => 'The image of the product.',
+        'type' => 'varchar',
+        'length' => 255,
+      ],
+      'summary' => [
+        'description' => 'The summary of the product.',
+        'type' => 'text',
+      ],
+      'description' => [
+        'description' => 'The description of the product.',
+        'type' => 'text',
+      ],
+      'category' => [
+        'description' => 'The category of the product.',
+        'type' => 'text',
+        'not null' => FALSE,
+        'serialize' => TRUE, // Serialize the data before storing.
+      ],
+      'type' => [
+        'description' => 'The type of the product.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ],
+      'owner_email' => [
+        'description' => 'The owner\'s email of the product.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ],
+      'expiry_date' => [
+        'description' => 'The expiry date of the product.',
+        'type' => 'date',
+        'mysql_type' => 'date',
+//        'not null' => TRUE,
+      ]
+    ],
+    'primary key' => ['id'],
+  ];
+  return $schema;
+}
+
+require_once(drupal_get_path('module', 'nutan_itonics_products') . '/nutan_itonics_products.admin.inc');
